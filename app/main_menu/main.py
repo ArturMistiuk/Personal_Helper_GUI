@@ -2,6 +2,7 @@ from tkinter import Tk, ttk
 
 from app.main_menu.services import calculate_root_geometry
 from app.calculator.main import start_calculator
+from app.weather.main import start_weather
 
 
 class MainMenu(Tk):
@@ -54,7 +55,7 @@ class MainMenu(Tk):
 
         # Settings for "Weather" button
         weather_button_config = MainMenu.widgets_settings["weather_button"]
-        weather_button = ttk.Button(self, text=weather_button_config["text"], style="Menu.TButton")
+        weather_button = ttk.Button(self, text=weather_button_config["text"], style="Menu.TButton", command=start_weather)
         weather_button.pack(pady=MainMenu.widgets_settings["menu_button"]["pady"])
 
         # Settings for "Exit" button
