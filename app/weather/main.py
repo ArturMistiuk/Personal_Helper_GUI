@@ -8,29 +8,28 @@ class Weather(Tk):
 
     def __init__(self):
         super().__init__()
-        self.title("Weather")
-        self.geometry("800x700")
+        self.title("Weather Forecast")
+        self.geometry("800x600")
         self.resizable(False, False)
 
-        self.make_binds()
         self.create_widgets()
+        self.make_binds()
 
     def create_widgets(self):
-        weather_report = Weather.weather_api.get_weather_report()
-        for index, (city, weather_report) in enumerate(weather_report.items()):
-            city_label = ttk.Label(self, text=city, font=("Georgia", 18, "bold"))
-            city_label.grid(row=index, column=0, padx=20, pady=80, sticky="w")
+        forecast_data = Weather.weather_api.get_weather_forecast()
+        if isinstance(forecast_data, dict):
+            city_label = ttk.Label(self, text=f"Weather Forecast for {WeatherAPI.city}", font=("Georgia", 18, "bold"))
+            city_label.pack(pady=20)
 
-            weather_label = ttk.Label(
-                self,
-                text=weather_report,
-                wraplength=300,
-                justify="left",
-                font=("Georgia", 12),
-            )
-            weather_label.grid(row=index, column=1, padx=50, pady=50, sticky="w")
+            for day in forecast_data["list"][:3]:
+                date_time = day["dt_txt"]
+                temperature = day["main"]["temp"]
+                weather_description = day["weather"][0]["description"]
 
-            self.grid_columnconfigure(1, weight=1)
+                forecast_text = f"{date_time}\nTemperature: {temperature}°C\nDescription: {weather_description}"
+
+                forecast_label = ttk.Label(self, text=forecast_text, wraplength=600, font=("Georgia", 12))
+                forecast_label.pack(pady=20)
 
     def make_binds(self):
         # Bind exit on Esc
