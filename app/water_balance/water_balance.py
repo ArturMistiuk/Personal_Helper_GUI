@@ -73,7 +73,7 @@ class WaterBalance(tk.Tk):
     def create_widgets(self):
         menu_button_style = ttk.Style()
         menu_button_style.configure(
-            "Water.TButton", font=("Georgia", 15)
+            "Water.TButton", font=("Georgia", 12)
         )
 
         input_frame = ttk.Frame(self, padding="20")
