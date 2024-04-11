@@ -3,9 +3,7 @@ from tkinter import Tk, ttk
 from app.calculator.main import start_calculator
 from app.main_menu.services import calculate_root_geometry
 from app.weather.main import start_weather
-from app.water_balance.water_balance import WaterBalance, start_water_balance
-
-# water = WaterBalance()
+from app.water_balance.water_balance import start_water_balance
 
 
 class MainMenu(Tk):
@@ -93,8 +91,8 @@ class MainMenu(Tk):
         water_balance_button = ttk.Button(
             self,
             text=water_balance_button_config["text"],
+            command=start_water_balance,
             style="Menu.TButton",
-            command=WaterBalance,
         )
         water_balance_button.pack(pady=MainMenu.widgets_settings["menu_button"]["pady"])
 
