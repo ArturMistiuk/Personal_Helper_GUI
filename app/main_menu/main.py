@@ -4,7 +4,7 @@ from tkinter import Tk, ttk
 from app.calculator.main import start_calculator
 from app.main_menu.services import calculate_root_geometry
 from app.weather.main import start_weather
-from app.water_balance.water_balance import start_water_balance
+from app.water_balance.main import start_water_balance
 
 
 class MainMenu(Tk):
