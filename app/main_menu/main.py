@@ -1,3 +1,4 @@
+import tkinter
 from tkinter import Tk, ttk
 
 from app.calculator.main import start_calculator
@@ -7,6 +8,7 @@ from app.water_balance.water_balance import start_water_balance
 
 
 class MainMenu(Tk):
+
     widgets_settings = {
         "welcome_label": {
             "font": ("Impact", 30),    # Comic Sans MS / Courier New / Garamond
@@ -129,4 +131,5 @@ class MainMenu(Tk):
         :return: Nothing
         :doc-author: Trelent
         """
+
         self.mainloop()
