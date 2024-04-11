@@ -8,28 +8,33 @@ class WaterBalance(tk.Tk):
         super().__init__()
         self.title("Daily Water Balance")
 
-        self.default_weight = tk.StringVar()
-        self.default_height = tk.StringVar()
-        self.water_var = tk.StringVar()
+        self.default_weight = tk.StringVar(value="80")
+        self.default_height = tk.StringVar(value="180")
+        self.water_var = tk.StringVar(value="0")
 
-        #self.load_data()
+        self.load_data()
         self.create_widgets()
+        self.make_binds()
 
-    #def load_data(self):
-    #    with open("water_balance_data.json", "r") as file:
-    #        data = json.load(file)
-    #        self.default_weight.set(str(data.get("weight", "70")))
-    #        self.default_height.set(str(data.get("height", "185")))
-    #        self.water_var.set(str(data.get("water_drunk", "0")))
+    def load_data(self):
+        try:
+            with open("water_balance_data.json", "r") as file:
+                data = json.load(file)
+                self.default_weight.set(str(data.get("weight")))
+                self.default_height.set(str(data.get("height")))
+                self.water_var.set(str(data.get("water_drunk")))
+        except FileNotFoundError:
+            # If data file is not found, use default values
+            pass
 
-    #def save_data(self):
-    #    data = {
-    #        "weight": float(self.default_weight.get()),
-    #        "height": float(self.default_height.get()),
-    #        "water_drunk": float(self.water_var.get())
-    #    }
-    #    with open("water_balance_data.json", "w") as file:
-    #        json.dump(data, file)
+    def save_data(self):
+        data = {
+            "weight": float(self.default_weight.get()),
+            "height": float(self.default_height.get()),
+            "water_drunk": float(self.water_var.get())
+        }
+        with open("water_balance_data.json", "w") as file:
+            json.dump(data, file)
 
     def calculate_water_requirement(self):
         try:
@@ -49,7 +54,7 @@ class WaterBalance(tk.Tk):
             self.water_requirement_label.config(
                 text=f"Recommended water intake per day: {water_requirement_liters:.2f} L")
 
-           # self.save_data()  # Save data after calculation
+            self.save_data()  # Save data after calculation
         except ValueError:
             messagebox.showerror("Error", "Please enter valid data")
 
@@ -66,6 +71,11 @@ class WaterBalance(tk.Tk):
             messagebox.showerror("Error", "Please enter a valid water amount")
 
     def create_widgets(self):
+        menu_button_style = ttk.Style()
+        menu_button_style.configure(
+            "Water.TButton", font=("Georgia", 15)
+        )
+
         input_frame = ttk.Frame(self, padding="20")
         input_frame.pack(fill=tk.BOTH, expand=True)
 
@@ -79,7 +89,7 @@ class WaterBalance(tk.Tk):
         height_entry = ttk.Entry(input_frame, textvariable=self.default_height)
         height_entry.grid(row=1, column=1, padx=10, pady=10)
 
-        calculate_button = ttk.Button(input_frame, text="Calculate", command=self.calculate_water_requirement)
+        calculate_button = ttk.Button(input_frame, text="Calculate", command=self.calculate_water_requirement, style="Water.TButton")
         calculate_button.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky="ew")
 
         self.water_requirement_label = ttk.Label(input_frame, text="")
@@ -90,14 +100,17 @@ class WaterBalance(tk.Tk):
         water_entry = ttk.Entry(input_frame, textvariable=self.water_var)
         water_entry.grid(row=4, column=1, padx=10, pady=10)
 
-        update_button = ttk.Button(input_frame, text="Update Balance", command=self.update_water_balance)
+        update_button = ttk.Button(input_frame, text="Update Balance", command=self.update_water_balance, style="Water.TButton")
         update_button.grid(row=5, column=0, columnspan=2, padx=10, pady=10, sticky="ew")
+
+    def make_binds(self):
+        # Bind exit on Esc
+        self.bind("<Escape>", lambda event: self.withdraw())
+
+
+water_balance = WaterBalance()
+water_balance.withdraw()
 
 
 def start_water_balance():
-    water_balance = WaterBalance()
-
-
-if __name__ == "__main__":
-    water_balance_app = WaterBalance()
-    water_balance_app.mainloop()
+    water_balance.deiconify()
